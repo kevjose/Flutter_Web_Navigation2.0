@@ -38,22 +38,38 @@ class _MainScreenState extends State<MainScreen> {
           )
         ],
       ),
-      body: Row(
-        key: UniqueKey(),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Drawer(
-            elevation: 1,
-            child: ListView.builder(
-                itemCount: routeList.length,
-                itemBuilder: (context, i) {
-                  return _navTile(routeList[i]);
-                }),
-          ),
-          Expanded(
-            child:
-                Center(child: RouteHandeler().getRouteWidget(widget.routeName)),
-          ),
+          Center(
+            child: RouteHandeler().getRouteWidget(widget.routeName),
+          )
         ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: const Color(0xFF0099CC),
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white.withOpacity(.60),
+        selectedFontSize: 14,
+        unselectedFontSize: 14,
+        currentIndex: routeList.indexWhere((routeListItem) =>
+                    widget.routeName.contains(routeListItem.route.name)) >=
+                0
+            ? routeList.indexWhere((routeListItem) =>
+                widget.routeName.contains(routeListItem.route.name))
+            : 0,
+        onTap: (value) {
+          AppRouterDelegate().setPathName(routeList[value].route.name);
+        },
+        items: routeList
+            .map(
+              (routeListItem) => BottomNavigationBarItem(
+                icon: Icon(routeListItem.icon),
+                label: routeListItem.title,
+              ),
+            )
+            .toList(),
       ),
     );
   }
@@ -61,27 +77,5 @@ class _MainScreenState extends State<MainScreen> {
   _logOut() async {
     await HiveDataStorageService.logOutUser();
     AppRouterDelegate().setPathName(RouteData.login.name, loggedIn: false);
-  }
-
-  Widget _navTile(SubNavigationRoutes route) {
-    return ListTile(
-      leading: Icon(
-        route.icon,
-        color: widget.routeName.contains(route.route.name)
-            ? Colors.blue
-            : Colors.grey,
-      ),
-      title: Text(
-        route.title,
-        style: TextStyle(
-          color: widget.routeName.contains(route.route.name)
-              ? Colors.blue
-              : Colors.grey,
-        ),
-      ),
-      onTap: () {
-        AppRouterDelegate().setPathName(route.route.name);
-      },
-    );
   }
 }

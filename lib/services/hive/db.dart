@@ -1,4 +1,5 @@
-import 'package:hive/hive.dart';
+import 'package:flutter/foundation.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'data_provider.dart';
 
@@ -76,6 +77,10 @@ class HiveDataProvider implements LocalDataProviderContract {
   /// Open and return hive box
   Future<Box> _getBox(String boxName) async {
     Box box;
+    if (!kIsWeb && !Hive.isBoxOpen(boxName)) {
+      await Hive.initFlutter();
+    }
+
     if (!Hive.isBoxOpen(boxName)) {
       box = await Hive.openBox(boxName);
     } else {

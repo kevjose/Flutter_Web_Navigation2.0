@@ -17,7 +17,6 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
   AppRouterDelegate._();
 
   // A custom trasition delegate to overwrite the default animation.
-  TransitionDelegate transitionDelegate = CustomTransitionDelegate();
 
   /// Keeps the app stack
   late List<Page> _stack = [];
@@ -28,6 +27,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
     if (isError) {
       return RoutePath.unknown();
     }
+    print('Pathname: $pathName');
     if (pathName == null) return RoutePath.home('splash'); //main
 
     return RoutePath.otherPage(pathName);
@@ -57,9 +57,12 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
 
   /// UnKnownRoute Stack
   List<Page> get _unknownRoute => [
-        const MaterialPage(
-          key: ValueKey('unknown'),
-          child: UnknownRoute(),
+        MaterialPage(
+          key: const ValueKey('unknown'),
+          child: Scaffold(
+            appBar: AppBar(title: const Text('Unkown route')),
+            body: const UnknownRoute(),
+          ),
         )
       ];
 
@@ -74,7 +77,6 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
     }
 
     return Navigator(
-      transitionDelegate: transitionDelegate,
       key: navigatorKey,
       pages: _stack,
       onPopPage: (route, result) {

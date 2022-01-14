@@ -16,7 +16,7 @@ enum RouteData {
   login,
   home,
   more,
-  settings
+  settings,
 }
 
 /// Class to handle route path related informations
@@ -33,7 +33,6 @@ class RouteHandeler {
 
     if (routeName != null) {
       final uri = Uri.parse(routeName);
-
       if (uri.pathSegments.isNotEmpty) {
         /// Getting first endpoint
         final pathName = uri.pathSegments.elementAt(0).toString();

@@ -26,4 +26,9 @@ List<SubNavigationRoutes> routeList = [
       title: RouteData.more.name.toUpperCase(),
       icon: Icons.more,
       route: RouteData.more),
+  SubNavigationRoutes(
+    title: RouteData.notFound.name.toUpperCase(),
+    icon: Icons.device_unknown,
+    route: RouteData.notFound,
+  ),
 ];
